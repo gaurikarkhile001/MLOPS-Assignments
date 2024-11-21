@@ -11,8 +11,6 @@ This project provides a Python class, `TitanicEDA`, that performs basic explorat
   - Distribution of survival rates based on `Pclass`, `Sex`, and `Age`.
   - Save visualizations as image files using Matplotlib.
 
-```markdown
-
 ## Requirements
 - Python 3.7 or higher
 - Pandas
@@ -24,7 +22,7 @@ This project provides a Python class, `TitanicEDA`, that performs basic explorat
    git clone <repository-url>
    cd <repository-directory>
    ```
-
+```markdown
 2. Install dependencies:
    ```bash
    pip install pandas matplotlib
