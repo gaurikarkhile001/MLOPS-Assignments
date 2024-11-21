@@ -1,3 +1,7 @@
+## Screenshot
+
+![Screenshot](Python/TASK2/images/Screenshot%202024-11-21%20133722.png)
+
 # House Price Predictor API  
 
 This project uses **FastAPI** to create an endpoint that predicts house prices based on user-provided features. The predictions are generated using a **Linear Regression model** built with **scikit-learn**.
