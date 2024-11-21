@@ -73,16 +73,6 @@ This project uses **FastAPI** to create an endpoint that predicts house prices b
 
 ---
 
-## Example Request  
-
-#### Screenshot: Request and Response  
-
-![API Request and Response](./screenshots/api_example.png)  
-
-
-
----
-
 
 ---
 
