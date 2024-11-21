@@ -15,12 +15,11 @@ This is a Streamlit-based web application that allows users to upload PDF files 
 ## Installation
 
 ### Step 1: Clone the Repository
-git clone https:https://github.com/Tejaswini-41/Chatbot.git
 
-###Step 2: Install Dependencies
+### Step 2: Install Dependencies
 Install the required Python packages using pip:
 pip install streamlit PyPDF2 sentence-transformers faiss-cpu transformers nltk
 
-###Step 3: Run the Application
+### Step 3: Run the Application
 Run the Streamlit app using the following command:
 streamlit run chatbot.py
