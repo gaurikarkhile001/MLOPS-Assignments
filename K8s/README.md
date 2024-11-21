@@ -4,7 +4,7 @@
 [Watch the video](https://drive.google.com/file/d/1vSPsD1rzVJgJWUom30ekS-abKiqOkOpq/view)
 
 ---
-```markdown
+
 # Create an EKS Cluster and Deploy the 2048 Game
 This guide walks you through the steps to create an EKS cluster and deploy the 2048 game into that cluster.
 
@@ -56,6 +56,7 @@ This guide walks you through the steps to create an EKS cluster and deploy the 2
    ```bash
    aws eks update-kubeconfig --region <region-code> --name <cluster-name>
    ```
+   ```markdown
    Example:
    ```bash
    aws eks update-kubeconfig --region us-east-1 --name unus-eks-cluster-1
