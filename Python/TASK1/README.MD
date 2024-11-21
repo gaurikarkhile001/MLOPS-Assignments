@@ -1,5 +1,5 @@
 
-```markdown
+
 # Titanic Dataset Exploratory Data Analysis (EDA)
 
 This project provides a Python class, `TitanicEDA`, that performs basic exploratory data analysis (EDA) on the Titanic dataset. It includes functionality to load data, generate summary statistics, and visualize the distribution of survival rates based on features such as `Pclass`, `Sex`, and `Age`. 
@@ -10,6 +10,8 @@ This project provides a Python class, `TitanicEDA`, that performs basic explorat
 - **Visualization**: 
   - Distribution of survival rates based on `Pclass`, `Sex`, and `Age`.
   - Save visualizations as image files using Matplotlib.
+
+```markdown
 
 ## Requirements
 - Python 3.7 or higher
