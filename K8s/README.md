@@ -1,159 +1,166 @@
-# Deploy on EKS Video Link:
+Here’s the complete `README.md` file with all the content formatted and ready to copy-paste:
+
+```markdown
+# Deploy on EKS Video Link
 [Watch the video](https://drive.google.com/file/d/1vSPsD1rzVJgJWUom30ekS-abKiqOkOpq/view)
 
+---
 
+# Create an EKS Cluster and Deploy the 2048 Game
+This guide walks you through the steps to create an EKS cluster and deploy the 2048 game into that cluster.
 
-Create an EKS cluster and deploy 2048 game into that cluster
-==================================================
+---
 
-Task 1: Create an EKS cluster
-=============================
-Name: <yourname>-eks-cluster-1
-Use K8S version 1.25
+## Task 1: Create an EKS Cluster
+1. **Cluster Name**: `<yourname>-eks-cluster-1`  
+   **Kubernetes Version**: 1.25
 
-Create an IAM role 'eks-cluster-role' with 1 policy attached: AmazonEKSClusterPolicy
-Create another IAM role 'eks-node-grp-role' with 3 policies attached: 
-(Allows EC2 instances to call AWS services on your behalf.)
-    - AmazonEKSWorkerNodePolicy
-    - AmazonEC2ContainerRegistryReadOnly
-    - AmazonEKS_CNI_Policy
+2. **IAM Roles**:  
+   - Create an IAM role `eks-cluster-role` with the `AmazonEKSClusterPolicy` attached.  
+   - Create another IAM role `eks-node-grp-role` with the following policies attached:  
+     - `AmazonEKSWorkerNodePolicy`  
+     - `AmazonEC2ContainerRegistryReadOnly`  
+     - `AmazonEKS_CNI_Policy`  
 
-Choose default VPC, Choose 2 or 3 subnets
-Choose a security group which open the ports 22, 80, 8080
-cluster endpoint access: public
+3. **VPC and Security**:  
+   - Use the default VPC.  
+   - Choose 2-3 subnets.  
+   - Choose a security group that allows ports 22, 80, and 8080.  
 
-# For VPC CNI, CoreDNS and kube-proxy, choose the default versions, For CNI, latest and default are 
-# different. But go with default.
+4. **Cluster Endpoint Access**: Public access.
 
-Click 'Create'. This process will take 10-12 minutes. Wait till your cluster shows up as Active. 
+5. For **VPC CNI**, CoreDNS, and kube-proxy, select the default versions.  
+   Note: For CNI, choose the default version instead of the latest.
 
+6. Click **Create** and wait for the cluster to show up as **Active** (this takes ~10-12 minutes).
 
-Task 2: Add Node Groups to our cluster
-======================================
-Now, lets add the worker nodes where the pods can run
+---
 
-Open the cluster > Compute > Add NodeGrp
-Name: <yourname>-eks-nodegrp-1 
-Select the role you already created
-Leave default values for everything else
+## Task 2: Add Node Groups to the Cluster
+1. Open the cluster → **Compute** → **Add Node Group**.  
+   **Node Group Name**: `<yourname>-eks-nodegrp-1`  
 
-AMI - choose the default 1 (Amazon Linux 2)
-change desired/minimum/maximum to 1 (from 2)
-Enable SSH access. Choose a security group which allwos 22, 80, 8080
+2. Select the IAM role `eks-node-grp-role`.
 
-Choose default values for other fields 
+3. **Configuration**:  
+   - AMI: Use the default Amazon Linux 2.  
+   - Desired/Minimum/Maximum instances: Set all to `1`.  
+   - Enable SSH access. Choose a security group that allows ports 22, 80, and 8080.  
 
-Node group creation may take 2-3 minutes
+4. Leave all other fields as default and click **Create**.  
+   This process will take 2-3 minutes.
 
+---
 
-Task 3: Authenticate to this cluster
-===================================
-Reference:
-https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html
+## Task 3: Authenticate to the Cluster
+1. **Update the kubeconfig file**:
+   ```bash
+   aws eks update-kubeconfig --region <region-code> --name <cluster-name>
+   ```
+   Example:
+   ```bash
+   aws eks update-kubeconfig --region us-east-1 --name unus-eks-cluster-1
+   ```
 
-Open cloudshell
+2. **Verify the nodes**:
+   ```bash
+   kubectl get nodes
+   ```
 
-# Type on your AWS CLI window 
-aws sts get-caller-identity
-# observe your account and user id details
+3. **Install the nano editor**:
+   ```bash
+   sudo yum install nano -y
+   ```
 
-# Create a  kubeconfig file where it stores the credentials for EKS:
-# kubeconfig configuration allows you to connect to your cluster using the kubectl command line.
-aws eks update-kubeconfig --region region-code --name my-cluster
-ex: aws eks update-kubeconfig --region us-east-1 --name unus-eks-cluster-1 # Use the cluster name you just 
-created
+---
 
+## Task 4: Create a New Pod for the 2048 Game
+1. Create a configuration file:
+   ```bash
+   nano 2048-pod.yaml
+   ```
 
-# see if you can get the nodes you created
-kubectl get nodes
+2. Add the following content:
+   ```yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+      name: 2048-pod
+      labels:
+         app: 2048-ws
+   spec:
+      containers:
+      - name: 2048-container
+        image: blackicebird/2048
+        ports:
+          - containerPort: 80
+   ```
 
-# Install nano editor in cloudshell. We will need this in the next task
-sudo yum install nano -y
+3. Apply the configuration:
+   ```bash
+   kubectl apply -f 2048-pod.yaml
+   ```
 
+4. Verify the pod:
+   ```bash
+   kubectl get pods
+   ```
 
+---
 
-Task 4: Create a new POD in EKS for the 2048 game
-================================================
+## Task 5: Setup a Load Balancer Service
+1. Create a service configuration file:
+   ```bash
+   nano mygame-svc.yaml
+   ```
 
-# clean up the files in cloudshell (Optional)
-rm *.* 
+2. Add the following content:
+   ```yaml
+   apiVersion: v1
+   kind: Service
+   metadata:
+      name: mygame-svc
+   spec:
+      selector:
+         app: 2048-ws
+      ports:
+      - protocol: TCP
+        port: 80
+        targetPort: 80
+      type: LoadBalancer
+   ```
 
-# create the config file in YAML to deploy 2048 game pod into the cluster
-nano 2048-pod.yaml
+3. Apply the configuration:
+   ```bash
+   kubectl apply -f mygame-svc.yaml
+   ```
 
-### code starts ###
-apiVersion: v1
-kind: Pod
-metadata:
-   name: 2048-pod
-   labels:
-      app: 2048-ws
-spec:
-   containers:
-   - name: 2048-container
-     image: blackicebird/2048
-     ports:
-       - containerPort: 80
+4. Verify the service:
+   ```bash
+   kubectl describe svc mygame-svc
+   ```
 
-### code ends ###
+5. Access the game:
+   - Use the DNS name of the Load Balancer (available in the EC2 console).
+   - Paste it into your browser to play the 2048 game.
 
+---
 
-# apply the config file to create the pod
-kubectl apply -f 2048-pod.yaml
-#pod/2048-pod created
+## Task 6: Cleanup
+1. Delete the pod:
+   ```bash
+   kubectl delete -f 2048-pod.yaml
+   ```
 
-# view the newly created pod
-kubectl get pods
+2. Delete the service:
+   ```bash
+   kubectl delete -f mygame-svc.yaml
+   ```
 
-
-Task 5: Setup Load Balancer Service
-===================================
-nano mygame-svc.yaml  
-
-### code starts ###
-
-apiVersion: v1
-kind: Service
-metadata:
-   name: mygame-svc
-spec:
-   selector:
-      app: 2048-ws
-   ports:
-   - protocol: TCP
-     port: 80
-     targetPort: 80
-   type: LoadBalancer
-
-### code ends ###
-
-# apply the config file
-kubectl apply -f mygame-svc.yaml
-
-# view details of the modified service
-kubectl describe svc mygame-svc
-
-# Access the LoadBalancer Ingress on the kops instance
-curl <LoadBalancer_Ingress>:<Port_number>
-or
-curl a06aa56b81f5741268daca84dca6b4f8-694631959.us-east-1.elb.amazonaws.com:80
-(try this from your laptop, not from your cloudshell)
-
-# Go to EC2 console. get the DNS name of ELB and paste the DNS into address bar of the browser
-# It will show the 2048 game. You can play. (need to wait for 2-3 minutes for the 
-# setup to be complete)
-
-
-Task 3: Cleanup
----------------
-# Clean up all the resources created in the task
-kubectl get pods
-kubectl delete -f 2048-pod.yaml
-
-kubectl get services
-kubectl delete -f mygame-svc.yaml
-
-
-
-####################################################################
+3. Verify the cleanup:
+   ```bash
+   kubectl get pods
+   kubectl get services
+   ```
+```
 
