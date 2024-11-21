@@ -1,11 +1,10 @@
-Here’s the complete `README.md` file with all the content formatted and ready to copy-paste:
 
-```markdown
+
 # Deploy on EKS Video Link
 [Watch the video](https://drive.google.com/file/d/1vSPsD1rzVJgJWUom30ekS-abKiqOkOpq/view)
 
 ---
-
+```markdown
 # Create an EKS Cluster and Deploy the 2048 Game
 This guide walks you through the steps to create an EKS cluster and deploy the 2048 game into that cluster.
 
@@ -163,4 +162,3 @@ This guide walks you through the steps to create an EKS cluster and deploy the 2
    kubectl get services
    ```
 ```
-
