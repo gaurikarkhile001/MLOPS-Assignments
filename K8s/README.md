@@ -1,3 +1,7 @@
+# Deploy on EKS Video Link:
+[Watch the video](https://drive.google.com/file/d/1vSPsD1rzVJgJWUom30ekS-abKiqOkOpq/view)
+
+
 
 Create an EKS cluster and deploy 2048 game into that cluster
 ==================================================
