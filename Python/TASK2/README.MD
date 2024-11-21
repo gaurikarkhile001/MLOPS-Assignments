@@ -1,6 +1,6 @@
 ## Screenshot
 
-![Screenshot](Python/TASK2/images/Screenshot%202024-11-21%20133722.png)
+![Screenshot](https://github.com/gaurikarkhile001/MLOPS-Assignments/blob/main/Python/TASK2/images/Screenshot%202024-11-21%20133722.png)
 
 # House Price Predictor API  
 
